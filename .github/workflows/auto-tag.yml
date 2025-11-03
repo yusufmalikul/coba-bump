@@ -49,6 +49,13 @@ jobs:
           # Create and push tag
           NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
           echo "Creating tag: $NEW_TAG"
+
+          # Check if tag already exists
+          if git rev-parse "$NEW_TAG" >/dev/null 2>&1; then
+            echo "Tag $NEW_TAG already exists. Skipping."
+            exit 0
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag -a "$NEW_TAG" -m "Release $NEW_TAG"
